@@ -1,7 +1,5 @@
 # Bug Reports for bar.py
 
-**To:** Member 1 (author of `bar.py`)
-**From:** Member 3 (Testing and Verification)
 **Status:** all three open. The fix below has been verified on a copy of `bar.py` but not yet applied to the project.
 
 ## Summary
@@ -93,14 +91,3 @@ This follows the same pattern `Bar.__init__` already uses for m and n. It reject
 **After the fix is merged:** Member 3 removes the three `@pytest.mark.xfail` lines in `tests/test_bar.py`, and the suite should show 75 passed.
 
 ---
-
-## Member 2 (interface)
-
-No bugs to report. There's no interface code in the project folder yet. When it's added, its tests should go in `tests/`, and the README's "What is tested" table should be updated.
-
-## Notes for the group report (not code bugs)
-
-These are inconsistencies in the written drafts, not in the code. They should be settled before the report is submitted.
-
-- **Complexity disagreement.** One draft gives a full solve as O(mn). Another gives O((mn)²). The code as written gives O((mn)²), because the area-sum assertion visits every piece on each break. Timings confirm this: a 100×100 solve took about 8 seconds and a 200×200 solve about 135 seconds. Without that check, the total would be O(mn). The report should state which version it describes and why.
-- **"No printing" claim.** A draft says `bar.py` contains no printing. The `__main__` demo at the bottom of the file does print, so the claim should be corrected or the demo moved out of the module.

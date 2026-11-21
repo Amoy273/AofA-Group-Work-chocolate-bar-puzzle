@@ -1,7 +1,5 @@
 # Expected vs Actual Results
 
-Prepared by Member 3 (Testing and Verification).
-
 **Environment:** Linux, Python 3.12.3, pytest 9.2.0.
 **Suite result:** 72 passed, 3 xfailed (the 3 xfailed tests are the known bugs in `BUG_REPORTS.md`). Runtime 0.16 s.
 

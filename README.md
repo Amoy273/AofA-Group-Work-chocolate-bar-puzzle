@@ -28,13 +28,13 @@ python3 -m pip install pytest
 
 ```
 chocolate_bar/
-├── bar.py            the simulator (Member 1)
-├── pytest.ini        pytest settings (tells pytest where to find bar.py)
+├── bar.py            
+├── pytest.ini       
 ├── tests/
-│   └── test_bar.py   the test suite (Member 3)
-├── README.md         this file
-├── RESULTS.md        expected vs actual results
-└── BUG_REPORTS.md    bugs found, for Members 1 and 2
+│   └── test_bar.py   
+├── README.md         
+├── RESULTS.md        
+└── BUG_REPORTS.md    
 ```
 
 ## Running the tests

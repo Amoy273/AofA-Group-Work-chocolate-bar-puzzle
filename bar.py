@@ -70,10 +70,10 @@ class Bar:
         ----------
         piece_id    : id of an existing piece in this bar
         orientation : 'H' for a horizontal cut (splits height)
-                      'V' for a vertical cut   (splits width)
+                    'V' for a vertical cut   (splits width)
         offset      : piece-relative cut position
-                      'H': 1 <= offset <= height - 1
-                      'V': 1 <= offset <= width  - 1
+                    'H': 1 <= offset <= height - 1
+                    'V': 1 <= offset <= width  - 1
 
         Returns
         -------
@@ -87,7 +87,7 @@ class Bar:
         # --- legality checks (fail fast: no mutation before all checks pass) ---
         if piece_id not in self.pieces:
             raise ValueError(f"No piece with id {piece_id}. "
-                             f"Valid ids: {sorted(self.pieces)}")
+                            f"Valid ids: {sorted(self.pieces)}")
 
         piece = self.pieces[piece_id]
 
@@ -103,18 +103,18 @@ class Bar:
         if orientation == "H":
             if not (1 <= offset <= piece.height - 1):
                 raise ValueError(f"Horizontal cut offset must be in 1..{piece.height - 1}, "
-                                 f"got {offset} (piece height = {piece.height}).")
+                                f"got {offset} (piece height = {piece.height}).")
             # top piece keeps the original id, bottom piece gets a new id
             p1 = Piece(piece.id, piece.row, piece.col, offset, piece.width)
             p2 = Piece(self.next_id, piece.row + offset, piece.col,
-                       piece.height - offset, piece.width)
+                    piece.height - offset, piece.width)
         else:  # orientation == "V"
             if not (1 <= offset <= piece.width - 1):
                 raise ValueError(f"Vertical cut offset must be in 1..{piece.width - 1}, "
-                                 f"got {offset} (piece width = {piece.width}).")
+                                f"got {offset} (piece width = {piece.width}).")
             p1 = Piece(piece.id, piece.row, piece.col, piece.height, offset)
             p2 = Piece(self.next_id, piece.row, piece.col + offset,
-                       piece.height, piece.width - offset)
+                    piece.height, piece.width - offset)
 
         # --- commit the change ---
         del self.pieces[piece_id]
@@ -183,7 +183,7 @@ if __name__ == "__main__":
     for i, (pid, orient, off) in enumerate(attempts, 1):
         p1, p2 = bar.break_piece(pid, orient, off)
         print(f"Step {i}: break piece {pid} ({orient}{off}) -> "
-              f"{p1.id} {p1.height}x{p1.width} + {p2.id} {p2.height}x{p2.width}")
+            f"{p1.id} {p1.height}x{p1.width} + {p2.id} {p2.height}x{p2.width}")
         print("  summary:", bar.summary())
 
     assert bar.is_solved(), "Bar should be fully separated"

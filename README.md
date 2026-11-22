@@ -1,41 +1,79 @@
-# Chocolate Bar Puzzle — Test Suite
+# Chocolate Bar Puzzle
 
-Test suite and verification for `bar.py` (CIT3003 Analysis of Algorithms, Option 3).
+A simulator and verification suite for the chocolate bar problem (CIT3003 Analysis of Algorithms, Option 3).
 
-## Setup & Running the Tests
+The puzzle explores breaking an m × n chocolate bar along grid lines into individual 1×1 squares, demonstrating that any complete sequence of valid cuts always requires exactly m·n − 1 breaks.
 
-Make sure `pytest` is installed:
+## Requirements
 
+- Python 3.9+
+- External packages:
+  - `pygame` (powers the GUI simulation)
+  - `pytest` (used to run the automated test suite)
+
+## Installation & Setup
+
+1. **Clone the repository** (or download the project folder):
+   ```bash
+   git clone https://github.com/<your-username>/AofA-Group-Work-chocolate-bar-puzzle.git
+   cd AofA-Group-Work-chocolate-bar-puzzle
+   ```
+
+2. **Create and activate a virtual environment** (recommended):
+   ```bash
+   # Windows
+   python -m venv venv
+   .\venv\Scripts\activate
+
+   # macOS / Linux
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**:
+   Install the required packages using `requirements.txt`:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   *(Alternatively, install them directly: `pip install pygame pytest`)*
+
+## Running the Project
+
+### 1. GUI Simulation
+Launch the graphical Pygame interface to visually configure bar sizes, select pieces, and perform cuts:
 ```bash
-pip install pytest
+python simulation.py
 ```
 
-Run all tests from the repository root:
+### 2. Command-Line Demo
+Run the quick built-in terminal smoke test to see the 2×3 worked example in action:
+```bash
+python bar.py
+```
 
+### 3. Automated Test Suite
+Run all tests:
+```bash
+pytest
+```
+Or run with verbose output:
 ```bash
 pytest -v
 ```
-
-To run a specific test by name or keyword:
-
+You can also run a specific test by name or keyword:
 ```bash
 pytest -v -k "float_piece"
 ```
+All 69 tests should collect and pass.
 
-All 69 tests should pass.
+## Project Structure
 
-## Project layout
-
-```
-chocolate_bar/
-├── bar.py            
-├── pytest.ini       
-├── tests/
-│   └── test_bar.py   
-├── README.md         
-├── RESULTS.md        
-└── BUG_REPORTS.md    
-```
+- `bar.py` - Core puzzle implementation (`Piece` and `Bar` classes, cut logic, invariant assertions, and manual demo).
+- `simulation.py` - Pygame visual simulation interface.
+- `tests/test_bar.py` - Pytest test suite covering normal breaks, strategies, geometry, input validation, and atomicity.
+- `requirements.txt` - Project dependencies (`pygame`, `pytest`).
+- `pytest.ini` - Pytest configuration file.
+- `RESULTS.md` - Expected vs actual test results, break order counts, and mutation test records.
 
 ## Test Suite Breakdown
 
@@ -58,3 +96,9 @@ During solver and strategy runs, `check_invariant()` runs after every cut to ver
 2. Total area of all pieces equals m × n.
 3. All pieces lie within the bar boundaries (0 <= row + height <= m, 0 <= col + width <= n).
 4. Every cell on the m × n grid is occupied by exactly one piece (no overlaps, no empty cells).
+
+## Developers
+- [Amoy Payne (2408392)](https://github.com/Amoy273)
+- [Ajani Adlam (2402087)](https://github.com/2402087UTECHPortfolio)
+- [Malik Bennett (2404813)](https://github.com/malikbennett) 
+- [Justin Powell (2501887)](https://github.com/Justin-Powelljm)

@@ -2,6 +2,8 @@ import pygame
 import sys 
 from bar import Bar
 
+''' User Interface / Simulation for chocolate bar problem. Done by member 2 '''
+
 pygame.init()
 
 # Window Configuration

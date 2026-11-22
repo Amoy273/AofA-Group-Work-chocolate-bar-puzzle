@@ -1,4 +1,5 @@
 """
+Group 1 - Amoy Payne 2408392, Ajani Adlam 2402087, Justin Powell 2501887, Malik Bennett 2404813
 bar.py — Chocolate Bar Puzzle: core algorithm and state.
 
 Represents an m x n chocolate bar as a set of rectangular pieces and

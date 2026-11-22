@@ -85,6 +85,9 @@ class Bar:
         ValueError with a clear message on any illegal request.
         """
         # --- legality checks (fail fast: no mutation before all checks pass) ---
+        if isinstance(piece_id, bool) or not isinstance(piece_id, int):
+            raise ValueError(f"piece_id must be an integer, got {piece_id!r}")
+
         if piece_id not in self.pieces:
             raise ValueError(f"No piece with id {piece_id}. "
                             f"Valid ids: {sorted(self.pieces)}")

@@ -1,28 +1,28 @@
-# Chocolate Bar Puzzle: Test Suite
+# Chocolate Bar Puzzle — Test Suite
 
-Testing and verification for `bar.py` (CIT3003 Option 3, Chocolate Bar Puzzle).
-Prepared by Member 3.
+Test suite and verification for `bar.py` (CIT3003 Analysis of Algorithms, Option 3).
 
-## Requirements
+## Setup & Running the Tests
 
-- Python 3.9 or newer (tested with Python 3.12.3)
-- pytest 7 or newer (tested with pytest 9.2.0)
+Make sure `pytest` is installed:
 
-## Setup
-
-Install pytest once.
-
-Windows:
-
-```
-py -m pip install pytest
+```bash
+pip install pytest
 ```
 
-macOS or Linux:
+Run all tests from the repository root:
 
+```bash
+pytest -v
 ```
-python3 -m pip install pytest
+
+To run a specific test by name or keyword:
+
+```bash
+pytest -v -k "float_piece"
 ```
+
+All 69 tests should pass.
 
 ## Project layout
 
@@ -37,71 +37,24 @@ chocolate_bar/
 └── BUG_REPORTS.md    
 ```
 
-## Running the tests
+## Test Suite Breakdown
 
-Open a terminal in the `chocolate_bar` folder, the one that contains `bar.py`, then run:
+| Category | Tests | Description |
+|---|---|---|
+| Normal shapes | 18 | Tests bars of various dimensions (1×1, strips, squares, rectangles up to 10×10) under peeling and randomized cut strategies. Confirms each run finishes in m·n − 1 breaks. |
+| Worked example | 1 | Executes the 5-cut worked example from the report on a 2×3 bar, verifying the resulting grid and piece IDs. |
+| Cut geometry | 1 | Verifies coordinate calculations (row/col offsets) when cutting a piece that is not at the origin (0, 0). |
+| Dimension validation | 11 | Confirms that non-integer, negative, or zero dimensions for m and n raise ValueError. |
+| Piece ID validation | 9 | Checks that non-existent IDs, wrong types (strings, None), booleans (True/False), floats (0.0), and unhashable types ([0]) raise ValueError. |
+| Cut parameters | 20 | Validates orientation ('H' or 'V' only), cut offsets (must be an integer within 1 <= offset < size), and rejects attempts to cut a 1×1 piece. |
+| Atomicity | 5 | Ensures rejected cuts raise ValueError without mutating the bar state (breaks counter, next ID, and pieces dictionary remain unchanged). |
+| Exhaustive break orders | 4 | Explores every possible sequence of legal cuts for small bars (1×3, 1×4, 2×2, 2×3), verifying that all complete paths terminate in exactly m·n − 1 breaks. |
+| **Total** | **69** | |
 
-Windows:
+## Invariant Verification
 
-```
-py -m pytest -v
-```
-
-macOS or Linux:
-
-```
-python3 -m pytest -v
-```
-
-The last line should read:
-
-```
-72 passed, 3 xfailed
-```
-
-The run takes well under a second.
-
-## Reading the results
-
-- **PASSED**: the behavior matches the specification.
-- **XFAIL**: a known bug. The test is marked as expected to fail, so it doesn't break the run. Each one is described in `BUG_REPORTS.md`.
-- **FAILED**: a regression or a new bug. Read the message under the failing test to see what was expected and what happened.
-- **XPASS(strict)**: a bug was fixed, so its XFAIL test now passes. The run is marked as failed on purpose. Remove the `@pytest.mark.xfail` line above that test and the run will pass again.
-
-To run one test, or all tests matching a name:
-
-```
-python -m pytest -v -k "float_piece"
-```
-
-## What is tested
-
-| Group              | Tests | What it checks                                                                                                                           |
-| ------------------ | ----- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Normal shapes      | 23    | 1×1, 1×7, 7×1, 4×4, 4×5 and 10×10 bars. Each starts as one piece, reaches m·n − 1 breaks under every strategy, and ends fully separated. |
-| Worked example     | 1     | The 2×3 trace from the report produces the expected grid.                                                                                |
-| Summary            | 1     | `summary()` agrees with the bar's state after every break.                                                                               |
-| Cut geometry       | 2     | New pieces land at the correct row and column, including a piece that doesn't start at the top-left corner.                              |
-| Invalid dimensions | 12    | Zero, negative, decimal, string, `None` and boolean values for m or n are rejected, and the error names the bad dimension.               |
-| Invalid piece IDs  | 9     | Unknown IDs are rejected. Wrong-type IDs are rejected. Three known bugs are marked XFAIL.                                                |
-| Illegal cuts       | 20    | Offsets outside 1 to size−1, invalid orientations, non-integer offsets and any cut on a 1×1 piece are rejected.                          |
-| Atomicity          | 5     | After a rejected cut, the break count, the piece list and the next ID are unchanged.                                                     |
-| Break orders       | 4     | Every legal break order on 1×3, 1×4, 2×2 and 2×3 bars is explored. Each complete order uses exactly m·n − 1 breaks.                      |
-
-Every expected value comes from the mathematics or the specification, not from copying the code's output. The break-order tests use exhaustive enumeration on small bars and seeded random orders on larger ones.
-
-## How the tests check the invariant
-
-`check_invariant()` in `tests/test_bar.py` runs after each break in the larger tests. It checks four things independently of `bar.py`'s own `assert` statements:
-
-1. pieces − 1 = breaks
-2. the piece areas sum to m × n
-3. every piece lies inside the bar
-4. every cell is covered by exactly one piece
-
-## Known limitations
-
-- The tests exercise the simulator through its code only. The command-line interface (Member 2) isn't covered until it exists in this folder.
-- Exhaustive break-order checks are limited to small bars. The largest is 2×3, which has 56 complete orders. Larger bars are covered by random orders.
-- `bar.py` uses `assert` for its invariant checks, and Python removes those under `python -O`. The tests check the invariant themselves, so they still catch problems when run that way.
-- Lowercase `'h'` and `'v'` are rejected by design. If the group decides to accept them, update `test_invalid_orientation_rejected`.
+During solver and strategy runs, `check_invariant()` runs after every cut to verify:
+1. Number of pieces is always `breaks + 1`.
+2. Total area of all pieces equals m × n.
+3. All pieces lie within the bar boundaries (0 <= row + height <= m, 0 <= col + width <= n).
+4. Every cell on the m × n grid is occupied by exactly one piece (no overlaps, no empty cells).
